@@ -1,37 +1,3 @@
-
-
-module cla64_flat(
-  input  [63:0] a,
-  input  [63:0] b,
-  input         cin,
-  output [63:0] sum,
-  output        cout
-);
-
-  wire [63:0] p, g;
-  wire [64:1] c;   // c[1]..c[64] are the 64 carries; think of cin as c[0]
-
-  // ---------------------------------------------------------------------
-  // Step 1: generate/propagate signals -- WORKED EXAMPLE
-  //
-  // This part is genuinely uniform across all 64 bits (same operation at
-  // every position), so a generate-for loop is the right tool here.
-  // `genvar` is a compile-time-only loop variable -- it does not exist as
-  // a real signal in the final circuit, it just controls how many times
-  // the loop body is elaborated.
-  // ---------------------------------------------------------------------
-  genvar i;
-  generate
-    for (i = 0; i < 64; i = i + 1) begin : gen_pg
-      xor #(2) (p[i], a[i], b[i]);
-      and #(2) (g[i], a[i], b[i]);
-    end
-  endgenerate
-
-  
-  
-
-
   assign #(2) c[1] = g[0]
                   | (p[0] & cin);
 
@@ -2240,12 +2206,3 @@ module cla64_flat(
                   | (p[63] & p[62] & p[61] & p[60] & p[59] & p[58] & p[57] & p[56] & p[55] & p[54] & p[53] & p[52] & p[51] & p[50] & p[49] & p[48] & p[47] & p[46] & p[45] & p[44] & p[43] & p[42] & p[41] & p[40] & p[39] & p[38] & p[37] & p[36] & p[35] & p[34] & p[33] & p[32] & p[31] & p[30] & p[29] & p[28] & p[27] & p[26] & p[25] & p[24] & p[23] & p[22] & p[21] & p[20] & p[19] & p[18] & p[17] & p[16] & p[15] & p[14] & p[13] & p[12] & p[11] & p[10] & p[9] & p[8] & p[7] & p[6] & p[5] & p[4] & p[3] & p[2] & p[1] & g[0])
                   | (p[63] & p[62] & p[61] & p[60] & p[59] & p[58] & p[57] & p[56] & p[55] & p[54] & p[53] & p[52] & p[51] & p[50] & p[49] & p[48] & p[47] & p[46] & p[45] & p[44] & p[43] & p[42] & p[41] & p[40] & p[39] & p[38] & p[37] & p[36] & p[35] & p[34] & p[33] & p[32] & p[31] & p[30] & p[29] & p[28] & p[27] & p[26] & p[25] & p[24] & p[23] & p[22] & p[21] & p[20] & p[19] & p[18] & p[17] & p[16] & p[15] & p[14] & p[13] & p[12] & p[11] & p[10] & p[9] & p[8] & p[7] & p[6] & p[5] & p[4] & p[3] & p[2] & p[1] & p[0] & cin);
 
-
-  assign cout = c[64];
-
-  // ---------------------------------------------------------------------
-  // Step 3: sum bits
-  // ---------------------------------------------------------------------
- assign #(2) sum = p ^ {c[63:1], cin};
-
-endmodule
