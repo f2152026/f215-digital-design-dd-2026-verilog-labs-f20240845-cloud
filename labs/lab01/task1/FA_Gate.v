@@ -1,7 +1,7 @@
 module FA_Gate(
-  input  a,
-  input  b,
-  input  cin,
+  input a,
+  input b,
+  input cin,
   output sum,
   output cout
 );
